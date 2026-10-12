@@ -1,6 +1,8 @@
 {
   "hosting": {
+    "site": "muteflow",
     "public": "public",
+    "cleanUrls": true,
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -8,12 +10,8 @@
     ],
     "rewrites": [
       {
-        "source": "/help",
-        "destination": "/help.html"
-      },
-      {
-        "source": "/admin-panel",
-        "destination": "/admin-panel.html"
+        "source": "**",
+        "destination": "/index.html"
       }
     ]
   }
