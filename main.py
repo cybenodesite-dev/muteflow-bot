@@ -14,7 +14,7 @@ API_URL = f"https://api.telegram.org/bot{TOKEN}"
 
 WATERMARK_IMG = "watermark.png"
 
-# إعداد قائمة الأوامر الرسمية الموضحة في الصورة (Bot Commands Menu)
+# إعداد قائمة الأوامر الرسمية
 def setup_bot_commands():
     commands = [
         {"command": "start", "description": "رسالة البدء"},
@@ -26,11 +26,11 @@ def setup_bot_commands():
     except Exception as e:
         print(f"Failed to set bot commands: {e}")
 
-# الأزرار المدمجة بالرسائل (Inline Keyboard)
+# الأزرار المدمجة بالرسائل (Inline Keyboard) - تم تحديث الروابط للـ Domain الجديد
 INLINE_KEYBOARD = {
     "inline_keyboard": [
-        [{"text": "💛 ادعمنا", "url": "https://muteflow.web.app/help"}],
-        [{"text": "🌐 زيارة الموقع الرسمي", "url": "https://muteflow.web.app/"}],
+        [{"text": "💛 ادعمنا", "url": "https://muteflow.cybenode.site/help"}],
+        [{"text": "🌐 زيارة الموقع الرسمي", "url": "https://muteflow.cybenode.site/"}],
         [{"text": "👨‍💻 المطور", "url": "https://t.me/X7OUD3"}]
     ]
 }
@@ -174,7 +174,7 @@ while True:
                 help_msg = (
                     "💛 <b>الخدمة مجانية بالكامل ونغطي تكاليفها بأنفسنا.</b>\n\n"
                     "إذا حابب تدعمنا أو تجرّب الخصائص الإضافية يمكنك زيارة رابط الدعم:\n"
-                    "https://muteflow.web.app/help"
+                    "https://muteflow.cybenode.site/help"
                 )
                 send_message(chat_id, help_msg, inline_markup=INLINE_KEYBOARD)
                 continue
@@ -228,7 +228,7 @@ while True:
                 caption = (
                     "شلت لك الموسيقى. الحين تقدر تنشره وأنت مرتاح 👍\n\n"
                     "إذا أعجبتك الخدمة، ادعمنا بنشرها في الجروبات اللي عندك عبر هذا الرابط واكسب الأجر 🌟\n"
-                    "https://muteflow.web.app/help"
+                    "https://muteflow.cybenode.site/help"
                 )
 
                 if msg_id:
