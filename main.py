@@ -26,7 +26,7 @@ def setup_bot_commands():
     except Exception as e:
         print(f"Failed to set bot commands: {e}")
 
-# الأزرار المدمجة بالرسائل (Inline Keyboard) - تم تحديث الروابط للـ Domain الجديد
+# الأزرار المدمجة بالرسائل (Inline Keyboard) - الروابط محدثة للنطاق الجديد
 INLINE_KEYBOARD = {
     "inline_keyboard": [
         [{"text": "💛 ادعمنا", "url": "https://muteflow.cybenode.site/help"}],
@@ -59,13 +59,13 @@ def process_media_with_outro(input_path, output_path, is_audio_only=False):
     vocals_wav = "separated/htdemucs/temp_audio/vocals.wav"
     clean_video = "clean_video.mp4"
     outro_video = "outro.mp4"
-    
+
     # 1. استخراج الصوت بأعلى جودة
     subprocess.run(["ffmpeg", "-y", "-i", input_path, "-vn", "-acodec", "pcm_s16le", "-ar", "44100", "-ac", "2", temp_wav], check=True)
-    
+
     # 2. فصل الموسيقى باستخدام Demucs
     subprocess.run(["demucs", "--two-stems=vocals", "-n", "htdemucs", temp_wav], check=True)
-    
+
     if is_audio_only:
         subprocess.run(["ffmpeg", "-y", "-i", vocals_wav, "-b:a", "192k", output_path], check=True)
     else:
@@ -146,7 +146,7 @@ last_update_id = 0
 while True:
     try:
         check_broadcast()
-        
+
         res = requests.get(f"{API_URL}/getUpdates", params={"offset": last_update_id + 1, "timeout": 10}).json()
         for update in res.get("result", []):
             last_update_id = update["update_id"]
@@ -154,7 +154,7 @@ while True:
             chat_id = message.get("chat", {}).get("id")
             from_user = message.get("from", {})
             user_id = from_user.get("id")
-            
+
             if not chat_id:
                 continue
 
@@ -181,7 +181,7 @@ while True:
 
             if message.get("photo"):
                 send_message(
-                    chat_id, 
+                    chat_id,
                     "❌ <b>عذراً، هذا الملف عبارة عن صورة!</b>\n\nيرجى إرسال مقطع فيديو أو ملف صوتي فقط لكي يتمكن البوت من فصل الموسيقى عنه.",
                     inline_markup=INLINE_KEYBOARD
                 )
@@ -210,8 +210,16 @@ while True:
 
                 file_id = media_obj["file_id"]
                 file_info = requests.get(f"{API_URL}/getFile", params={"file_id": file_id}).json()
+
+                # فحص آمن لمنع توقف البوت عند فشل استلام الملف من تليجرام
+                if "result" not in file_info:
+                    print(f"File info error: {file_info}")
+                    if msg_id:
+                        edit_message(chat_id, msg_id, "❌ حدث خطأ أثناء تحميل الملف، يرجى المحاولة مرة أخرى.")
+                    continue
+
                 file_path = file_info["result"]["file_path"]
-                
+
                 ext = "mp3" if is_audio_only else "mp4"
                 input_file = f"input_{user_id}.{ext}"
                 output_file = f"output_{user_id}.{ext}"
